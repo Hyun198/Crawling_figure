@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figure homepage</title>
+</head>
+
+<body>
+    Homepage
+    <div class="container">
+        <form id="searchForm">
+            <input id="searchInput" type="text" name="keyword" placeholder="찾고 싶은 피규어">
+            <button type="submit">검색</button>
+        </form>
+        <div id="searchResults"></div>
+    </div>
+
+
+    <script>
+        async function search(event) {
+            event.preventDefault(); // 기본 폼 제출 동작 방지
+
+            const formData = new FormData(document.getElementById('searchForm'));
+            const searchInput = formData.get('keyword');
+
+            try {
+                const response = await fetch(`/search?keyword=${encodeURIComponent(searchInput)}`);
+                const searchData = await response.json();
+                displaySearchResults(searchData);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        function displaySearchResults(results) {
+            const searchResultsContainer = document.getElementById('searchResults');
+            searchResultsContainer.innerHTML = ''; // 기존 검색 결과를 초기화
+
+            results.forEach(result => {
+                const productDiv = document.createElement('div');
+                productDiv.innerHTML = `
+                    <h3>${result.name}</h3>
+                    <img src="${result.image}" alt="${result.name}" width="200">
+                    <p>${result.price}</p>
+                `;
+                searchResultsContainer.appendChild(productDiv);
+            });
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', search);
+
+    </script>
+</body>
+
+</html>

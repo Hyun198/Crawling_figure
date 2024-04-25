@@ -1,0 +1,26 @@
+.searchResults {
+  display: flex;
+  gap: 1.5rem;
+  height: 500px;
+}
+
+
+.searchResults h3 {
+  font-size: 1.2rem;
+}
+
+.searchResults img {
+  aspect-ratio: 9/16;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 1.2rem;
+  height: 500px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
