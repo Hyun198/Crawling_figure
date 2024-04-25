@@ -2,13 +2,19 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const Poison_scrapeWebsite = require('./crawl');
+const bodyParser = require('body-parser');
+const { Poison_scrapeWebsite, FigureMallWebsite } = require('./crawl');
 
-const PORT = process.env.PORT
+
+const PORT = process.env.PORT || 5000;
 const app = express();
-app.use(cors());
+
 app.use(express.static(path.join(__dirname, 'client', 'public',)));
 
+
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 
@@ -28,7 +34,17 @@ app.get('/search', async (req, res) => {
     }
 })
 
-
+app.post('/search', async (req, res) => {
+    try {
+        const keyword = req.body.keyword.toString();
+        const data = await FigureMallWebsite('http://www.figuremall.co.kr', keyword);
+        console.log(data);
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+})
 
 
 

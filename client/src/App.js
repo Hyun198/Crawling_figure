@@ -14,8 +14,9 @@ function App() {
 
     try {
       const response = await axios.get(`/search?keyword=${encodeURIComponent(searchInput)}`)
+      const response2 = await axios.post(`/search`, { keyword: searchInput })
       setPoisonSearchResults(response.data);
-      setFiguremallSearchResults(response.data);
+      setFiguremallSearchResults(response2.data);
     } catch (error) {
       console.error('Error search results', error);
     }
@@ -47,7 +48,15 @@ function App() {
           ))}
         </div>
         <h2>피규어 몰</h2>
-
+        <div className="searchResults" id="searchResults">
+          {FiguremallSearchResults.map((result, index) => (
+            <div className="products" key={index}>
+              <h3>{result.name}</h3>
+              <img src={result.image} alt={result.name} width="250" />
+              <p>{result.price}</p>
+            </div>
+          ))}
+        </div>
         <h2>피규어 시티</h2>
 
         <h2>ASL 스토어</h2>
