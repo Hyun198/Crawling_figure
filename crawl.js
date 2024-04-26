@@ -26,6 +26,17 @@ async function Poison_scrapeWebsite(url, keyword) {
 
 }
 
+async function gloryMondayWebsite(url, keyword) {
+    console.log(keyword);
+    console.log("글러리몬 데이터----------------------------")
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.goto(`${url}/goods/goods_search.php?keyword=${keyword}`);
+    let products = [];
+
+}
+
 async function FigureMallWebsite(url, keyword) {
     console.log(keyword);
     console.log("피규어몰 데이터----------------------------")
@@ -56,4 +67,4 @@ async function FigureMallWebsite(url, keyword) {
 
 }
 
-module.exports = { Poison_scrapeWebsite, FigureMallWebsite };
+module.exports = { Poison_scrapeWebsite, gloryMondayWebsite, FigureMallWebsite };

@@ -8,6 +8,7 @@ function App() {
   const [searchInput, setSearchInput] = useState('');
   const [PoisonSearchResults, setPoisonSearchResults] = useState([]);
   const [FiguremallSearchResults, setFiguremallSearchResults] = useState([]);
+  const [GlorymondaySearchResults, setGlorymondaySearchResults] = useState([]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -15,8 +16,10 @@ function App() {
     try {
       const response = await axios.get(`/search?keyword=${encodeURIComponent(searchInput)}`)
       const response2 = await axios.post(`/search`, { keyword: searchInput })
+      const response3 = await axios.get(`/search?keyword=${encodeURIComponent(setSearchInput)}`)
       setPoisonSearchResults(response.data);
       setFiguremallSearchResults(response2.data);
+      setGlorymondaySearchResults(response3.data);
     } catch (error) {
       console.error('Error search results', error);
     }
@@ -62,6 +65,15 @@ function App() {
         <h2>ASL 스토어</h2>
 
         <h2>글로리 먼데이</h2>
+        <div className="searchResults" id="searchResults">
+          {GlorymondaySearchResults.map((result, index) => (
+            <div className="products" key={index}>
+              <h3>{result.name}</h3>
+              <img src={result.image} alt={result.name} width="250" />
+              <p>{result.price}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </>
 
