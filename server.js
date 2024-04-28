@@ -27,9 +27,9 @@ app.get('/search', async (req, res) => {
         const keyword = req.query.keyword;
         const data1 = await Poison_scrapeWebsite('https://poisonapple.co.kr', keyword);
         const data2 = await gloryMondayWebsite('https://www.glorymonday.com', keyword)
-        console.log(data1);
+        const responseData = { data1, data2 }
         console.log(data2);
-        res.json(data1, data2);
+        res.json(responseData);
 
     } catch (error) {
         console.error(error);
@@ -41,7 +41,6 @@ app.post('/search', async (req, res) => {
     try {
         const keyword = req.body.keyword.toString();
         const data = await FigureMallWebsite('http://www.figuremall.co.kr', keyword);
-        console.log(data);
         res.json(data);
     } catch (error) {
         console.error(error);

@@ -27,19 +27,41 @@ async function Poison_scrapeWebsite(url, keyword) {
 }
 
 async function gloryMondayWebsite(url, keyword) {
-    console.log(keyword);
-    console.log("글러리몬 데이터----------------------------")
+
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     await page.goto(`${url}/goods/goods_search.php?keyword=${keyword}`);
+
     let products = [];
+    const productSelector = '.item_gallery_type > ul > li';
+    const productElements = await page.$$(productSelector);
+
+    for (const productElement of productElements) {
+        const productName = await productElement.$eval('div.item_cont div.item_info_cont div.item_tit_box strong.item_name', element => element.textContent.trim());
+        const imageUrl = await productElement.$eval('div.item_cont div.item_photo_box a img', element => element.getAttribute('src'));
+        const priceElement = await productElement.$('div.item_cont div.item_info_cont div.item_money_box strong.item_price');
+        let productPrice = 'Sold Out';
+        if (priceElement) {
+            productPrice = await priceElement.evaluate(node => node.textContent.trim());
+        }
+
+        products.push({
+            name: productName,
+            image: imageUrl,
+            price: productPrice,
+        });
+    }
+
+    console.log(products);
+    await browser.close();
+
+    return products;
 
 }
 
 async function FigureMallWebsite(url, keyword) {
-    console.log(keyword);
-    console.log("피규어몰 데이터----------------------------")
+
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 

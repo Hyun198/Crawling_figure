@@ -16,10 +16,10 @@ function App() {
     try {
       const response = await axios.get(`/search?keyword=${encodeURIComponent(searchInput)}`)
       const response2 = await axios.post(`/search`, { keyword: searchInput })
-      const response3 = await axios.get(`/search?keyword=${encodeURIComponent(setSearchInput)}`)
-      setPoisonSearchResults(response.data);
+      const { data1, data2 } = response.data
+      setPoisonSearchResults(data1);
+      setGlorymondaySearchResults(data2);
       setFiguremallSearchResults(response2.data);
-      setGlorymondaySearchResults(response3.data);
     } catch (error) {
       console.error('Error search results', error);
     }
