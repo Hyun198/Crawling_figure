@@ -97,24 +97,9 @@ async function figureCityWebsite(url, keyword) {
     await page.goto(`${url}/shop/shopbrand.html`);
     await page.type('input.MS_search_word', keyword.toString());
     await page.keyboard.press('Enter');
-    await page.waitForSelector('#prdSearch div.prd-list  table  tbody tr ');
-
-
     let products = [];
-    const productElements = await page.$$('#prdSearch div.prd-list  table  tbody tr');
-    for (const productElement of productElements) {
-        const productName = await productElement.$eval('div > ul > li.dsc > span', element => element.textContent.trim());
-        const productPrice = await productElement.$eval('div > ul > li.price', element => element.textContent.trim());
-        const productImage = await productElement.$eval('div > ul > div.thumb > a > img', element => element.getAttribute('src'));
 
-        products.push({
-            name: productName,
-            image: url + "/" + productImage,
-            price: productPrice,
-        }
 
-        )
-    }
     await browser.close();
     return products
 
