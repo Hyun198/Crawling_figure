@@ -77,6 +77,22 @@ function App() {
       </div>
 
       <h2>피규어 시티</h2>
+      <div className="figurecity_container">
+
+        <div className="searchResults" id="searchResults">
+          {FiguremallSearchResults.map((result, index) => (
+            <div className="products" key={index}>
+              <div className='slide-img'>
+                <img src={result.image} alt={result.name} width="250" />
+              </div>
+              <div className='detail-box'>
+                <p>{result.name}</p>
+                <p>{result.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <h2>ASL 스토어</h2>
 

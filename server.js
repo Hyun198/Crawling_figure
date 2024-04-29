@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { Poison_scrapeWebsite, gloryMondayWebsite, FigureMallWebsite } = require('./crawl');
+const { Poison_scrapeWebsite, gloryMondayWebsite, FigureMallWebsite, figureCityWebsite } = require('./crawl');
 
 
 const PORT = process.env.PORT || 5000;
@@ -39,8 +39,10 @@ app.get('/search', async (req, res) => {
 app.post('/search', async (req, res) => {
     try {
         const keyword = req.body.keyword.toString();
-        const data = await FigureMallWebsite('http://www.figuremall.co.kr', keyword);
-        res.json(data);
+        const data1 = await FigureMallWebsite('http://www.figuremall.co.kr', keyword);
+        const data2 = await figureCityWebsite('http://www.figurecity.co.kr', keyword);
+        const responseData = { data1, data2 }
+        res.json(responseData);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
