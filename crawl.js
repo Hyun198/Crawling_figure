@@ -53,7 +53,6 @@ async function gloryMondayWebsite(url, keyword) {
         });
     }
 
-    console.log(products);
     await browser.close();
 
     return products;

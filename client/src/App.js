@@ -30,51 +30,74 @@ function App() {
   return (
     <>
       <h1>Figure homepage</h1>
-      <div className="container">
-        <form onSubmit={handleSearch}>
-          <input
-            type="text"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="찾고 싶은 피규어"
-          />
-          <button type="submit">검색</button>
-        </form>
-        <h2>포이즌 애플</h2>
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="찾고 싶은 피규어"
+        />
+        <button type="submit">검색</button>
+      </form>
+
+      <h2>포이즌 애플</h2>
+      <div className="poisonapple_container">
+
         <div className="searchResults" id="searchResults">
           {PoisonSearchResults.map((result, index) => (
             <div className="products" key={index}>
-              <h3>{result.name}</h3>
-              <img src={result.image} alt={result.name} width="250" />
-              <p>{result.price}</p>
-            </div>
-          ))}
-        </div>
-        <h2>피규어 몰</h2>
-        <div className="searchResults" id="searchResults">
-          {FiguremallSearchResults.map((result, index) => (
-            <div className="products" key={index}>
-              <h3>{result.name}</h3>
-              <img src={result.image} alt={result.name} width="250" />
-              <p>{result.price}</p>
-            </div>
-          ))}
-        </div>
-        <h2>피규어 시티</h2>
+              <div className='slide-img'>
+                <img src={result.image} alt={result.name} width="250" />
+              </div>
+              <div className='detail-box'>
+                <p>{result.name}</p>
+                <p>{result.price}</p>
+              </div>
 
-        <h2>ASL 스토어</h2>
-
-        <h2>글로리 먼데이</h2>
-        <div className="searchResults" id="searchResults">
-          {GlorymondaySearchResults.map((result, index) => (
-            <div className="products" key={index}>
-              <h3>{result.name}</h3>
-              <img src={result.image} alt={result.name} width="250" />
-              <p>{result.price}</p>
             </div>
           ))}
         </div>
       </div>
+      <h2>피규어 몰</h2>
+      <div className="figuremall_container">
+
+        <div className="searchResults" id="searchResults">
+          {FiguremallSearchResults.map((result, index) => (
+            <div className="products" key={index}>
+              <div className='slide-img'>
+                <img src={result.image} alt={result.name} width="250" />
+              </div>
+              <div className='detail-box'>
+                <p>{result.name}</p>
+                <p>{result.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <h2>피규어 시티</h2>
+
+      <h2>ASL 스토어</h2>
+
+      <h2>글로리 먼데이</h2>
+      <div className='glorymonday_container'>
+
+        <div className="searchResults" id="searchResults">
+          {GlorymondaySearchResults.map((result, index) => (
+            <div className="products" key={index}>
+              <div className='slide-img'>
+                <img src={result.image} alt={result.name} width="250" />
+              </div>
+              <div className='detail-box'>
+                <p>{result.name}</p>
+                <p>{result.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </>
 
   );
