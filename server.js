@@ -39,10 +39,10 @@ app.get('/search', async (req, res) => {
 app.post('/search', async (req, res) => {
     try {
         const keyword = req.body.keyword.toString();
-        const data1 = await FigureMallWebsite('http://www.figuremall.co.kr', keyword);
-        const data2 = await figureCityWebsite('http://www.figurecity.co.kr', keyword);
-        const responseData = { data1, data2 }
-        res.json(responseData);
+        const postdata1 = await FigureMallWebsite('http://www.figuremall.co.kr', keyword);
+        const postdata2 = await figureCityWebsite('http://www.figurecity.co.kr', keyword);
+        const responsePostData = { postdata1, postdata2 };
+        res.json(responsePostData);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
