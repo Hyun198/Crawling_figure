@@ -8,6 +8,23 @@ body {
   background-color: #eef8ff;
 }
 
+h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: black;
+  font-family: sans-serif;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+}
+
 .poisonapple_container {
   display: flex;
   justify-content: center;
@@ -42,6 +59,8 @@ body {
   flex-direction: column;
   width: 450px;
   height: 445px;
+  color: white;
+  background-color: rgb(61, 58, 58);
   border: 1px solid black;
   border-radius: 10px;
 }
