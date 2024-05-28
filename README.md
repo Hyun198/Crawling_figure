@@ -1,7 +1,8 @@
 # FigureCity Web Scraper
 
 이 프로젝트는 FigureCity 웹 사이트에서 상품 정보를 스크랩하는 웹 스크래퍼입니다.
-크롤링 목표 사이트 목록 --------------------
+
+크롤링 목표 사이트 목록
 
 1. 피규어몰 http://www.figuremall.co.kr/
 2. 피규어시티 http://www.figurecity.co.kr/
