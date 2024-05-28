@@ -8,6 +8,10 @@
 3. 포이즌애플 https://poisonapple.co.kr/
 4. 글로리먼데이 https://www.glorymonday.com/
 
+## 시스템 아키텍쳐
+
+![시스템 아키텍쳐](./relative/피규어%20크롤링.png)
+
 ## 실행 환경
 
 - 이 프로젝트는 Node.js와 npm을 필요로 합니다. 시스템에 설치되어 있는지 확인하세요.
