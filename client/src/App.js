@@ -12,7 +12,7 @@ const override: CSSProperties = {
 function App() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
-
+  const [selectedSite, setSelectedSite] = useState('All');
   const [searchInput, setSearchInput] = useState('');
   const [PoisonSearchResults, setPoisonSearchResults] = useState([]);
   const [FiguremallSearchResults, setFiguremallSearchResults] = useState([]);
@@ -40,7 +40,21 @@ function App() {
     }
   };
 
-
+  const renderProducts = (results) => {
+    return results && results.length > 0 && (
+      results.map((result, index) => (
+        <div className='products' key={index}>
+          <div className="slide-img">
+            <img src={result.image} alt={result.name} width="250" />
+          </div>
+          <div className='detail-box'>
+            <p>{result.name}</p>
+            <p>{result.price}</p>
+          </div>
+        </div>
+      ))
+    );
+  };
 
   return (
     <>
@@ -49,10 +63,10 @@ function App() {
           <h1 style={{ color: "white" }}>Figure Info</h1>
           <ul className='nav-list'>
             <li className='active'><a href="#" aria-current="page">Home</a></li>
-            <li><a href="#">포이즌애플</a></li>
-            <li><a href="#">피규어몰</a></li>
-            <li><a href="#">피규어시티</a></li>
-            <li><a href="#">글로리먼데이</a></li>
+            <li className={selectedSite === 'Poison' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()}>포이즌애플</a></li>
+            <li className={selectedSite === 'Figuremall' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()} >피규어몰</a></li>
+            <li className={selectedSite === 'FigureCity' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()}>피규어시티</a></li>
+            <li className={selectedSite === 'Glorymonday' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()}>글로리먼데이</a></li>
           </ul>
           <form onSubmit={handleSearch}>
             <input
@@ -65,108 +79,63 @@ function App() {
           </form>
         </nav>
 
-
-        {loading ?
-          (
-            <div className="loading-container">
-              <BounceLoader
-                color={"#123abc"}
-                loading={loading}
-                cssOverride={override}
-                size={150}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-              />
-            </div>
-
-          )
-          :
-          (
-            <>
-              <h2>포이즌 애플</h2>
-              <div className="poisonapple_container">
-                <div className="searchResults" id="searchResults">
-                  {PoisonSearchResults && PoisonSearchResults.length > 0 && (
-                    PoisonSearchResults.map((result, index) => (
-                      <div className="products" key={index}>
-                        <div className='slide-img'>
-                          <img src={result.image} alt={result.name} width="250" />
-                        </div>
-                        <div className='detail-box'>
-                          <p>{result.name}</p>
-                          <p>{result.price}</p>
-                        </div>
-                      </div>
-                    ))
-                  )}
+        {loading ? (
+          <div className="loading-container">
+            <BounceLoader
+              color={"#123abc"}
+              loading={loading}
+              cssOverride={override}
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        ) : (
+          <>
+            {(selectedSite === 'All' || selectedSite === 'Poison') && (
+              <>
+                <h2>포이즌 애플</h2>
+                <div className="poisonapple_container">
+                  <div className="searchResults" id="searchResults">
+                    {renderProducts(PoisonSearchResults)}
+                  </div>
                 </div>
-              </div>
-
-              <h2>피규어 몰</h2>
-              <div className="figuremall_container">
-                <div className="searchResults" id="searchResults">
-                  {FiguremallSearchResults && FiguremallSearchResults.length > 0 && (
-                    FiguremallSearchResults.map((result, index) => (
-                      <div className="products" key={index}>
-                        <div className='slide-img'>
-                          <img src={result.image} alt={result.name} width="250" />
-                        </div>
-                        <div className='detail-box'>
-                          <p>{result.name}</p>
-                          <p>{result.price}</p>
-                        </div>
-                      </div>
-                    ))
-                  )}
+              </>
+            )}
+            {(selectedSite === 'All' || selectedSite === 'Figuremall') && (
+              <>
+                <h2>피규어 몰</h2>
+                <div className="figuremall_container">
+                  <div className="searchResults" id="searchResults">
+                    {renderProducts(FiguremallSearchResults)}
+                  </div>
                 </div>
-              </div>
-
-
-              <h2>피규어 시티</h2>
-              <div className="figurecity_container">
-                <div className="searchResults" id="searchResults">
-                  {FigureCitySearchResults && FigureCitySearchResults.length > 0 && (
-                    FigureCitySearchResults.map((result, index) => (
-                      <div className="products" key={index}>
-                        <div className='slide-img'>
-                          <img src={result.image} alt={result.name} width="250" />
-                        </div>
-                        <div className='detail-box'>
-                          <p>{result.name}</p>
-                          <p>{result.price}</p>
-                        </div>
-                      </div>
-                    ))
-                  )}
+              </>
+            )}
+            {(selectedSite === 'All' || selectedSite === 'FigureCity') && (
+              <>
+                <h2>피규어 시티</h2>
+                <div className="figurecity_container">
+                  <div className="searchResults" id="searchResults">
+                    {renderProducts(FigureCitySearchResults)}
+                  </div>
                 </div>
-              </div>
-
-
-              <h2>글로리 먼데이</h2>
-              <div className='glorymonday_container'>
-                <div className="searchResults" id="searchResults">
-                  {GlorymondaySearchResults && GlorymondaySearchResults.length > 0 && (
-                    GlorymondaySearchResults.map((result, index) => (
-                      <div className="products" key={index}>
-                        <div className='slide-img'>
-                          <img src={result.image} alt={result.name} width="250" />
-                        </div>
-                        <div className='detail-box'>
-                          <p>{result.name}</p>
-                          <p>{result.price}</p>
-                        </div>
-                      </div>
-                    ))
-                  )}
+              </>
+            )}
+            {(selectedSite === 'All' || selectedSite === 'Glorymonday') && (
+              <>
+                <h2>글로리 먼데이</h2>
+                <div className='glorymonday_container'>
+                  <div className="searchResults" id="searchResults">
+                    {renderProducts(GlorymondaySearchResults)}
+                  </div>
                 </div>
-              </div>
-            </>
-          )
-        }
+              </>
+            )}
+          </>
+        )}
       </>
-
     </>
-
   );
 }
 
