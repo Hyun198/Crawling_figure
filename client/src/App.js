@@ -45,16 +45,26 @@ function App() {
   return (
     <>
       <>
-        <h1>Figure homepage</h1>
-        <form onSubmit={handleSearch}>
-          <input
-            type="text"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="찾고 싶은 피규어"
-          />
-          <button type="submit">검색</button>
-        </form>
+        <nav>
+          <h1 style={{ color: "white" }}>Figure Info</h1>
+          <ul className='nav-list'>
+            <li className='active'><a href="#" aria-current="page">Home</a></li>
+            <li><a href="#">포이즌애플</a></li>
+            <li><a href="#">피규어몰</a></li>
+            <li><a href="#">피규어시티</a></li>
+            <li><a href="#">글로리먼데이</a></li>
+          </ul>
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="찾고 싶은 피규어"
+            />
+            <button type="submit">검색</button>
+          </form>
+        </nav>
+
 
         {loading ?
           (
