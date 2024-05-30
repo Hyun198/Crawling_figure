@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #24252A;
+
 }
 
 li,
@@ -13,6 +13,7 @@ button {
   color: #ecf0f1;
   text-decoration: none;
   list-style: none;
+  cursor: pointer;
 }
 
 body {
@@ -33,6 +34,18 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 30px 10%;
+  border-bottom: 1px solid #ecf0f1;
+  background-color: #24252A;
+
+}
+
+nav h1 {
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+}
+
+nav h1:hover {
+  color: #0088a9;
 }
 
 nav li {
@@ -50,11 +63,18 @@ nav li a:hover {
 }
 
 button {
+  margin-left: 5px;
   padding: 9px 25px;
   background-color: rgba(0, 136, 169, 1);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease 0s;
+  border: none;
+}
+
+
+.search_box {
+  background-color: red;
 }
 
 form input {
@@ -69,6 +89,16 @@ button:hover {
   background-color: rgba(0, 136, 169, 0.8);
 }
 
+.main-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: #0088a9;
+
+}
+
 .loading-container {
   display: flex;
   justify-content: center;
@@ -77,24 +107,20 @@ button:hover {
 
 }
 
-.poisonapple_container {
-  display: flex;
+.results-container {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
+  gap: 10px;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  margin: 20px 0;
 }
 
-.figuremall_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-
-.glorymonday_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
+.results-container .products {
+  flex: 1 1 calc(20% - 10px);
+  margin: 5px;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 
@@ -109,10 +135,10 @@ button:hover {
   display: flex;
   margin: 0px 15px;
   flex-direction: column;
-  width: 450px;
-  height: 445px;
+  width: 300px;
+  height: 450px;
   color: white;
-  background-color: rgb(61, 58, 58);
+  background-color: rgb(177, 171, 171);
   border: 1px solid black;
   border-radius: 10px;
 }
@@ -138,4 +164,12 @@ button:hover {
   justify-content: end;
   align-items: center;
   gap: 3rem;
+}
+
+.no-results {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }

@@ -40,7 +40,17 @@ function App() {
     }
   };
 
+
+  const resetResults = () => {
+    setSelectedSite('All');
+    setPoisonSearchResults([]);
+    setFiguremallSearchResults([]);
+    setGlorymondaySearchResults([]);
+    setFigureCitySearchResults([]);
+  }
+
   const renderProducts = (results) => {
+
     return results && results.length > 0 && (
       results.map((result, index) => (
         <div className='products' key={index}>
@@ -56,31 +66,63 @@ function App() {
     );
   };
 
+  const filteredResults = () => {
+
+    switch (selectedSite) {
+      case 'Poison':
+        return renderProducts(PoisonSearchResults);
+      case 'Figuremall':
+        return renderProducts(FiguremallSearchResults);
+      case 'FigureCity':
+        return renderProducts(FigureCitySearchResults);
+      case 'Glorymonday':
+        return renderProducts(GlorymondaySearchResults);
+      default:
+        return (
+          <>
+            {renderProducts(PoisonSearchResults)}
+            {renderProducts(FiguremallSearchResults)}
+            {renderProducts(FigureCitySearchResults)}
+            {renderProducts(GlorymondaySearchResults)}
+          </>
+        );
+    }
+  };
+
+
   return (
     <>
-      <>
-        <nav>
-          <h1 style={{ color: "white" }}>Figure Info</h1>
-          <ul className='nav-list'>
-            <li className='active'><a href="#" aria-current="page">Home</a></li>
-            <li className={selectedSite === 'Poison' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()}>포이즌애플</a></li>
-            <li className={selectedSite === 'Figuremall' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()} >피규어몰</a></li>
-            <li className={selectedSite === 'FigureCity' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()}>피규어시티</a></li>
-            <li className={selectedSite === 'Glorymonday' ? 'active' : ''}><a href="#" onClick={() => setSelectedSite()}>글로리먼데이</a></li>
-          </ul>
-          <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="찾고 싶은 피규어"
-            />
-            <button type="submit">검색</button>
-          </form>
-        </nav>
 
-        {loading ? (
-          <div className="loading-container">
+      <nav>
+        <h1 style={{ color: "white" }} onClick={resetResults}>Figure Info</h1>
+        <ul className='nav-list'>
+          <li ><a href="/" aria-current="page">Home</a></li>
+          <li ><a href="https://poisonapple.co.kr">포이즌애플</a></li>
+          <li ><a href="http://www.figuremall.co.kr/" >피규어몰</a></li>
+          <li ><a href="http://www.figurecity.co.kr/index.html" >피규어시티</a></li>
+          <li ><a href="https://www.glorymonday.com/" >글로리먼데이</a></li>
+        </ul>
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="찾고 싶은 피규어"
+          />
+          <button type="submit">검색</button>
+        </form>
+      </nav>
+      <div className="filter-func">
+        <button onClick={() => setSelectedSite('All')}>전체</button>
+        <button onClick={() => setSelectedSite('Poison')}>포이즌애플</button>
+        <button onClick={() => setSelectedSite('Figuremall')}>피규어몰</button>
+        <button onClick={() => setSelectedSite('FigureCity')}>피규어시티</button>
+        <button onClick={() => setSelectedSite('Glorymonday')}>글로리먼데이</button>
+      </div>
+
+      {
+        loading ? (
+          <div className="loading-container" >
             <BounceLoader
               color={"#123abc"}
               loading={loading}
@@ -91,51 +133,13 @@ function App() {
             />
           </div>
         ) : (
-          <>
-            {(selectedSite === 'All' || selectedSite === 'Poison') && (
-              <>
-                <h2>포이즌 애플</h2>
-                <div className="poisonapple_container">
-                  <div className="searchResults" id="searchResults">
-                    {renderProducts(PoisonSearchResults)}
-                  </div>
-                </div>
-              </>
-            )}
-            {(selectedSite === 'All' || selectedSite === 'Figuremall') && (
-              <>
-                <h2>피규어 몰</h2>
-                <div className="figuremall_container">
-                  <div className="searchResults" id="searchResults">
-                    {renderProducts(FiguremallSearchResults)}
-                  </div>
-                </div>
-              </>
-            )}
-            {(selectedSite === 'All' || selectedSite === 'FigureCity') && (
-              <>
-                <h2>피규어 시티</h2>
-                <div className="figurecity_container">
-                  <div className="searchResults" id="searchResults">
-                    {renderProducts(FigureCitySearchResults)}
-                  </div>
-                </div>
-              </>
-            )}
-            {(selectedSite === 'All' || selectedSite === 'Glorymonday') && (
-              <>
-                <h2>글로리 먼데이</h2>
-                <div className='glorymonday_container'>
-                  <div className="searchResults" id="searchResults">
-                    {renderProducts(GlorymondaySearchResults)}
-                  </div>
-                </div>
-              </>
-            )}
-          </>
-        )}
-      </>
+          <div className="results-container">
+            {filteredResults()}
+          </div>
+        )
+      }
     </>
+
   );
 }
 
