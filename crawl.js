@@ -51,6 +51,8 @@ async function gloryMondayWebsite(url, keyword) {
             const productName = await productElement.$eval('div.item_cont div.item_info_cont div.item_tit_box strong.item_name', element => element.textContent.trim());
             const imageUrl = await productElement.$eval('div.item_cont div.item_photo_box a img', element => element.getAttribute('src'));
             const priceElement = await productElement.$('div.item_cont div.item_info_cont div.item_money_box strong.item_price');
+            const linkElement = await productElement.$('div.item_cont div.item_photo_box a');
+            const link = await linkElement.evaluate(element => element.getAttribute('href'));
             let productPrice = 'Sold Out';
             if (priceElement) {
                 productPrice = await priceElement.evaluate(node => node.textContent.trim());
@@ -60,6 +62,7 @@ async function gloryMondayWebsite(url, keyword) {
                 name: productName,
                 image: imageUrl,
                 price: productPrice,
+                link: link,
             });
 
 

@@ -28,6 +28,7 @@ app.get('/search', async (req, res) => {
         const data1 = await Poison_scrapeWebsite('https://poisonapple.co.kr', keyword);
         const data2 = await gloryMondayWebsite('https://www.glorymonday.com', keyword)
         const responseData = { data1, data2 }
+        console.log(responseData.data2);
         res.json(responseData);
 
     } catch (error) {
