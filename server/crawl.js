@@ -28,7 +28,6 @@ async function gloryMondayWebsite(url, keyword) {
 
         await page.goto(`${url}/goods/goods_search.php?keyword=${keyword}`);
         const productSelector = '.item_gallery_type > ul > li';
-
         const productElements = await page.$$(productSelector);
 
         const productPromises = productElements.map((productElement) => {
@@ -78,21 +77,22 @@ async function FigureMallWebsite(url, keyword) {
 
         await page.waitForSelector('#searchWrap div.prd-list tbody tr');
 
-        let products = [];
         const productElements = await page.$$('#searchWrap div.prd-list tbody tr td');
-        for (const productElement of productElements) {
-            const productName = await productElement.$eval('li.dsc.name', element => element.textContent.trim());
-            const productPrice = await productElement.$eval('li.price', element => element.textContent.trim());
-            const productImage = await productElement.$eval('li > div > a > img', element => element.getAttribute('src'));
-
-            products.push({
-                name: productName,
-                image: url + "/" + productImage,
-                price: productPrice,
+        const productPromises = productElements.map(productElement => {
+            return Promise.all([
+                productElement.$eval('li.dsc.name', element => element.textContent.trim()),
+                productElement.$eval('li.price', element => element.textContent.trim()),
+                productElement.$eval('li > div > a > img', element => element.getAttribute('src')),
+            ]).then(([productName, productPrice, productImage]) => {
+                return {
+                    name: productName,
+                    image: `${url}/${productImage}`,
+                    price: productPrice,
+                };
             });
-
-        }
-        return products
+        });
+        const products = await Promise.all(productPromises);
+        return products;
     } catch (error) {
         console.error("figuremall:", error);
     } finally {
@@ -114,21 +114,22 @@ async function figureCityWebsite(url, keyword) {
         // 페이지 로드를 대기하고 결과가 표시될 때까지 기다립니다.
         await page.waitForSelector('#prdSearch div.prd-list table tbody tr td');
 
-        let products = [];
         const productElements = await page.$$('#prdSearch div.prd-list table tbody tr td');
-        for (const productElement of productElements) {
-            const productName = await productElement.$eval('li.dsc', element => element.textContent.trim())
-            const productPrice = await productElement.$eval('li.price', element => element.textContent.trim())
-            const productImage = await productElement.$eval('div.thumb a img', element => element.getAttribute('src'));
 
-            products.push({
-                name: productName,
-                image: url + "/" + productImage,
-                price: productPrice,
-            })
-
-        }
-
+        const productPromises = productElements.map((productElement) => {
+            return Promise.all([
+                productElement.$eval('li.dsc', element => element.textContent.trim()),
+                productElement.$eval('li.price', element => element.textContent.trim()),
+                productElement.$eval('div.thumb a img', element => element.getAttribute('src'))
+            ]).then(async ([productName, productPrice, productImage]) => {
+                return {
+                    name: productName,
+                    image: `${url}/${productImage}`,
+                    price: productPrice,
+                };
+            });
+        });
+        const products = await Promise.all(productPromises);
         return products;
 
     } catch (error) {
