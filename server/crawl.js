@@ -9,21 +9,7 @@ async function Poison_scrapeWebsite(url, keyword) {
 
         await page.goto(`${url}/goods/goods_search.php?keyword=${encodeURIComponent(keyword)}`);
 
-        let products = [];
 
-        const productSelector = '.item-display.type-gallery .list > ul > li';
-        const productElements = await page.$$(productSelector);
-        for (const productElement of productElements) {
-            const productName = await productElement.$eval('.txt strong', element => element.textContent.trim());
-            const imageUrl = await productElement.$eval('.thumbnail img', element => element.getAttribute('src'));
-            const productPrice = await productElement.$eval('.price .cost strong', element => element.textContent.trim());
-            products.push({
-                name: productName,
-                image: imageUrl,
-                price: productPrice,
-            });
-        }
-        return products
     } catch (error) {
         console.error("poison apple: ", error);
     } finally {
@@ -40,33 +26,35 @@ async function gloryMondayWebsite(url, keyword) {
     const page = await browser.newPage();
     try {
 
-
         await page.goto(`${url}/goods/goods_search.php?keyword=${keyword}`);
-
-        let products = [];
         const productSelector = '.item_gallery_type > ul > li';
+
         const productElements = await page.$$(productSelector);
 
-        for (const productElement of productElements) {
-            const productName = await productElement.$eval('div.item_cont div.item_info_cont div.item_tit_box strong.item_name', element => element.textContent.trim());
-            const imageUrl = await productElement.$eval('div.item_cont div.item_photo_box a img', element => element.getAttribute('src'));
-            const priceElement = await productElement.$('div.item_cont div.item_info_cont div.item_money_box strong.item_price');
-            const linkElement = await productElement.$('div.item_cont div.item_photo_box a');
-            const link = await linkElement.evaluate(element => element.getAttribute('href'));
-            let productPrice = 'Sold Out';
-            if (priceElement) {
-                productPrice = await priceElement.evaluate(node => node.textContent.trim());
-            }
+        const productPromises = productElements.map((productElement) => {
+            return Promise.all([
+                productElement.$eval('div.item_cont div.item_info_cont div.item_tit_box strong.item_name', element => element.textContent.trim()),
+                productElement.$eval('div.item_cont div.item_photo_box a img', element => element.getAttribute('src')),
+                productElement.$('div.item_cont div.item_info_cont div.item_money_box strong.item_price'),
+                productElement.$('div.item_cont div.item_photo_box a')
+            ]).then(async ([productName, imageUrl, priceElement, linkElement]) => {
+                const link = await linkElement.evaluate(element => element.getAttribute('href'));
+                let productPrice = 'Sold Out';
+                if (priceElement) {
+                    productPrice = await priceElement.evaluate(node => node.textContent.trim());
+                }
 
-            products.push({
-                name: productName,
-                image: imageUrl,
-                price: productPrice,
-                link: link,
+                return {
+                    name: productName,
+                    image: imageUrl,
+                    price: productPrice,
+                    link: link,
+                };
             });
+        });
 
+        const products = await Promise.all(productPromises);
 
-        }
         return products;
     }
     catch (error) {
